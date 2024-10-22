@@ -36,7 +36,7 @@ public class EmployeeController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("all-employees")
+    @GetMapping("all-employeesdsc")
     public ResponseEntity<HashMap<String,Object>> fetchEmployeeListWithDSC() {
         HashMap<String, Object> response = new HashMap<String, Object>();
 
