@@ -36,6 +36,18 @@ public class EmployeeController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("all-employees")
+    public ResponseEntity<HashMap<String,Object>> fetchEmployeeListWithDSC() {
+        HashMap<String, Object> response = new HashMap<String, Object>();
+
+        response.put("status", true);
+        response.put("payload",
+                fetchEmployees().stream()
+                        .sorted((emp1,emp2)->emp2.getEmpId()-emp1.getEmpId()).collect(Collectors.toUnmodifiableList()));
+        response.put("code", 200);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
 
     private List<Employee> fetchEmployees(){
