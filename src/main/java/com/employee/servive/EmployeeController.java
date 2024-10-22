@@ -2,11 +2,13 @@ package com.employee.servive;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class EmployeeController {
@@ -15,7 +17,29 @@ public class EmployeeController {
     @PostMapping("/add-employee")
     public ResponseEntity<HashMap<String,Object>> addEmployeeList() {
         HashMap<String, Object> response = new HashMap<String, Object>();
-        List<Employee> employees = List.of(
+
+        response.put("status", true);
+        response.put("payload", fetchEmployees());
+        response.put("code", 200);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("all-employees")
+    public ResponseEntity<HashMap<String,Object>> fetchEmployeeList() {
+        HashMap<String, Object> response = new HashMap<String, Object>();
+
+        response.put("status", true);
+        response.put("payload",
+                fetchEmployees().stream()
+                        .sorted((emp1,emp2)->emp1.getEmpId()-emp2.getEmpId()).collect(Collectors.toUnmodifiableList()));
+        response.put("code", 200);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+
+    private List<Employee> fetchEmployees(){
+        return List.of(
                 new Employee(101, "Pawan Barthunia",
                         "FSSP", "Male", 2345678.89),
                 new Employee(102, "Ritesh Barthonia",
@@ -38,9 +62,5 @@ public class EmployeeController {
                         "Jeffries", "Male", 2645678.89)
 
         );
-        response.put("status", true);
-        response.put("payload", employees);
-        response.put("code", 200);
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
