@@ -62,7 +62,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/maximumSalary")
-    public ResponseEntity<HashMap<String,Object>> fetchmaxSalary(@RequestParam String filter) {
+    public ResponseEntity<HashMap<String,Object>> fetchmaxSalary() {
         HashMap<String, Object> response = new HashMap<String, Object>();
         response.put("status", true);
         response.put("payload",fetchEmployees().stream().max(Comparator.comparingDouble(Employee::getSalary))
