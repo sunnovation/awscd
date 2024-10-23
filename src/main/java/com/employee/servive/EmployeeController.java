@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,6 +57,16 @@ public class EmployeeController {
         response.put("payload",
                 fetchEmployees().stream().filter(employee ->employee.getGender().equalsIgnoreCase(filter))
                         .sorted((emp1,emp2)->emp2.getEmpId()-emp1.getEmpId()).collect(Collectors.toUnmodifiableList()));
+        response.put("code", 200);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/maximumSalary")
+    public ResponseEntity<HashMap<String,Object>> fetchmaxSalary(@RequestParam String filter) {
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        response.put("status", true);
+        response.put("payload",fetchEmployees().stream().max(Comparator.comparingDouble(Employee::getSalary))
+                );
         response.put("code", 200);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
